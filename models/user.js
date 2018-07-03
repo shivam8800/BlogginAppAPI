@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+import Article from './article'
 
 const Email = require('mongoose-type-mail');
-import Article from './article';
 
 
 var UserSchema = new Schema({
@@ -10,9 +10,8 @@ var UserSchema = new Schema({
 	email:{type:Email, required:true, unique: true },
 	is_admin:{type: Boolean, default: false},
 	is_superadmin: {type: Boolean, default: false},
-	articles : [{ type: Schema.Types.ObjectId, ref: 'Article' }]
+	articles : [{ type: Schema.Types.ObjectId, ref: 'Article', default: null }]
 });
 
 const User = mongoose.model('User', UserSchema)
-
 module.exports = User;
