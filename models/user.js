@@ -7,7 +7,8 @@ const Email = require('mongoose-type-mail');
 
 var UserSchema = new Schema({
 	name:{type: String, required: true},
-	email:{type:Email, required:true, unique: true },
+	email:{type:Email, required:true, index: {unique: true} },
+	password: { type: String, required: true },
 	is_admin:{type: Boolean, default: false},
 	is_superadmin: {type: Boolean, default: false},
 	articles : [{ type: Schema.Types.ObjectId, ref: 'Article', default: null }]
