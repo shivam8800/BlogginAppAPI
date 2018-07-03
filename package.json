@@ -1,0 +1,43 @@
+{
+  "name": "bloggingapp_api",
+  "version": "1.0.0",
+  "description": "This is the api for blogging application",
+  "main": "index.js",
+  "scripts": {
+    "test": "nothing",
+    "start": "nodemon bootstrap.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shivam8800/BloggingAppAPI.git"
+  },
+  "keywords": [
+    "Hard",
+    "work",
+    "is",
+    "the",
+    "key",
+    "of",
+    "success",
+    "But",
+    "Smart",
+    "work",
+    "is",
+    "better",
+    "then",
+    "that",
+    ":)"
+  ],
+  "author": "Shivam Raj",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shivam8800/BloggingAppAPI/issues"
+  },
+  "homepage": "https://github.com/shivam8800/BloggingAppAPI#readme",
+  "dependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-es2015": "^6.24.1",
+    "hapi": "^17.5.2",
+    "nodemon": "^1.17.5"
+  }
+}
