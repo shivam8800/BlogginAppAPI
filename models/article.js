@@ -7,8 +7,9 @@ var ArticleSchema = new Schema({
 	title:{type: String, required: true},
 	content:{type: String, required:true},
 	auther_id:{type: Number, ref: 'User'},
-	image: {type: String, required:true},
-	date: {type: Date, default: Date.now}
+	image: {type: String, required:true, default: null},
+	date: {type: Date, default: Date.now},
+	approved: {type: Boolean, default: false}
 });
 
 const Article = mongoose.model('Article', ArticleSchema)

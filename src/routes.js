@@ -144,8 +144,50 @@ const routes = [
 
 				});
 			}
-			return new Promise(pr)		
+			return new Promise(pr)
 		}
+	},
+	{
+		method: 'POST',
+		path: '/create/article',
+        config: {
+            // we joi plugin to validate request
+            validate:{
+              payload:{
+              		title:Joi.string().required(),
+              		content:Joi.string().required()
+              	}
+            },
+			auth: 'jwt',
+        },
+        handler: async (request, h) =>{
+        	
+        	let pr = async (resolve, reject) =>{
+				const authenticated_user = request.auth.credentials;
+				var newArticle = new ArticleModel({
+					"title": request.payload.title,
+					"content": request.payload.content,
+					"auther_id": authenticated_user
+				});
+
+				newArticle.save(function(err, data){
+					if (err){
+						return reject({
+							data: err,
+							message: "error handled"
+						});
+					} else {
+						return resolve({
+							statusCode: 200,
+							message: "you have Successfully created article",
+							data: data
+						});
+					}
+				})
+
+			}
+			return new Promise(pr)
+        }
 	}
 ]
 
