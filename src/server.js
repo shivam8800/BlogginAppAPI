@@ -4,10 +4,9 @@ const Hapi = require('hapi');
 import routes from './routes'
 
 // validation function
-const validate = async function (decoded, request) {
-
-    // do your checks to see if the person is valid
-    if (!people[decoded.id]) {
+const validate = async function (user,decoded, request) {
+    // checks to see if the person is valid
+    if (!user['_id']) {
       return { isValid: false };
     }
     else {
@@ -23,9 +22,10 @@ const init = async () => {
 
     server.auth.strategy('jwt', 'jwt',
       { key: 'vZiIpmTzqXHp8PpYXTwqc9SRQ1UAyAfC',
-        validate,
-        verifyOptions: { ignoreExpiration: true }
+        validate:validate,
+        verifyOptions: { algorithms: [ 'HS256' ] }
       });
+
     // server.auth.default('jwt');
 
     server.route( routes );
