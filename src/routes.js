@@ -326,6 +326,30 @@ const routes = [
 			}
 			 return new Promise(pr)
 		}
+	},
+	{
+		method: 'GET',
+		path: '/all/article',
+		handler: async (request, h) =>{
+			let pr =  async (resolve, reject) =>{
+				ArticleModel.find({}, function(err,data){
+					if(err){
+						return reject({
+							statusCode: 501,
+							message: 'error has handled',
+							error: err
+						});
+					} else {
+						return resolve({
+							statusCode: 501,
+							message: 'Successfully fetch the data',
+							data: data
+						});
+					}
+				});
+			}
+			return new Promise(pr)
+		}
 	}
 ]
 
