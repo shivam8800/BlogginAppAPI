@@ -9,16 +9,6 @@ const fs = require('fs');
 
 const routes = [
 	{
-		method: 'GET',
-	    path: '/',
-	    config: { auth: 'jwt' },
-	    handler: (request, h) => {
-	    	const authenticated_user = request.auth.credentials
-	        return 'Hello, world!';
-	    }
-
-	},
-	{
 		method: 'POST',
 		path: '/registration',
         config: {
@@ -305,7 +295,7 @@ const routes = [
 	},
 	{
 		method: 'GET',
-		path: '/user/name/{user_id}',
+		path: '/userdata/{user_id}',
 		handler: async (request, h) =>{
 			let pr = async (resolve, reject) =>{
 				UserModel.findOne({_id: request.params.user_id}, function(err, doc){
@@ -344,6 +334,30 @@ const routes = [
 							statusCode: 501,
 							message: 'Successfully fetch the data',
 							data: data
+						});
+					}
+				});
+			}
+			return new Promise(pr)
+		}
+	},
+	{
+		method: 'GET',
+		path: '/articledata/{article_id}',
+		handler: async (request, h) =>{
+			let pr = async (resolve, reject) =>{
+				ArticleModel.findOne({_id: request.params.article_id}, function(err, doc){
+					if(err){
+						return reject({
+							statusCode: 501,
+							message: 'error has handled',
+							error: err
+						});
+					} else {
+						return resolve({
+							statusCode: 501,
+							message: 'Successfully fetch the data',
+							data: doc
 						});
 					}
 				});
