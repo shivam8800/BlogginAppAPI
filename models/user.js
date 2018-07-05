@@ -11,7 +11,7 @@ var UserSchema = new Schema({
 	password: { type: String, required: true },
 	is_admin:{type: Boolean, default: false},
 	is_superadmin: {type: Boolean, default: false},
-	articles : [{ type: Schema.Types.ObjectId, ref: 'Article', default: null }]
+	articles : [{ type: Schema.Types.ObjectId, ref: 'Article'}]
 });
 
 const User = mongoose.model('User', UserSchema)

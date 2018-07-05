@@ -5,7 +5,7 @@ const db = require('../database').db;
 var Joi = require('joi');
 var async = require('async');
 const JWT = require('jsonwebtoken');  // used to sign our content
-
+const fs = require('fs');
 
 const routes = [
 	{
@@ -170,25 +170,73 @@ const routes = [
 					"auther_id": authenticated_user
 				});
 
-				newArticle.save(function(err, data){
+				newArticle.save(async function(err, data){
 					if (err){
 						return reject({
 							data: err,
 							message: "error handled"
 						});
 					} else {
+						authenticated_user.articles.push(data._id);
+						let user = await UserModel.findOneAndUpdate({ _id: authenticated_user._id }, { $set: { articles: authenticated_user.articles}});
 						return resolve({
-							statusCode: 200,
-							message: "you have Successfully created article",
+							statusCode: 201,
+							message: "Successfully created article of a user",
 							data: data
 						});
-					}
-				})
 
+					}
+				});
 			}
 			return new Promise(pr)
         }
-	}
+	},
+	{
+
+		method: 'POST',
+		path: '/article/image/{article_id}',
+		config: {
+			auth: 'jwt',
+			payload: {
+				output: 'stream',
+				parse: true,
+				allow: 'multipart/form-data'
+			},
+
+			handler: async function (request, h){
+				let pr = async (resolve, reject) =>{
+					var data = request.payload;
+					if (data.file) {
+						var name = data.file.hapi.filename;
+						var path = __dirname + "/uploads/" + name;
+						var file = fs.createWriteStream(path);
+
+						file.on('error', function (err) {
+							console.error(err)
+							return reject({
+								message:"you got the error while sending file",
+								data: err
+							})
+						});
+
+						data.file.pipe(file);
+
+						data.file.on('end',async function (err) {
+							var ret = {
+								filename: data.file.hapi.filename,
+								headers: data.file.hapi.headers
+							}
+							const authenticated_user = request.auth.credentials;
+							let article = await ArticleModel.findOneAndUpdate({_id: request.params.article_id},{ $set: { image: path}});
+							return resolve(JSON.stringify(ret));
+						})
+					}
+				}
+				return new Promise(pr)
+			}
+		}
+	},
+
 ]
 
 export default routes;
