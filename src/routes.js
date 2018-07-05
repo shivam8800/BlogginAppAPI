@@ -176,8 +176,8 @@ const routes = [
 							message: "error handled"
 						});
 					} else {
-						authenticated_user.articles.push(data._id);
-						let user = await UserModel.findOneAndUpdate({ _id: authenticated_user._id }, { $set: { articles: authenticated_user.articles}}, function(error, user){
+						UserModel.findOneAndUpdate({ _id: authenticated_user._id }, { $push: { articles: authenticated_user }}, function(error, user){
+							console.log(user);
 							if (error){
 								return reject({
 									data: err,
