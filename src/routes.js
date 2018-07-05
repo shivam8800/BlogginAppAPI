@@ -161,7 +161,6 @@ const routes = [
 			auth: 'jwt',
         },
         handler: async (request, h) =>{
-        	
         	let pr = async (resolve, reject) =>{
 				const authenticated_user = request.auth.credentials;
 				var newArticle = new ArticleModel({
@@ -178,11 +177,19 @@ const routes = [
 						});
 					} else {
 						authenticated_user.articles.push(data._id);
-						let user = await UserModel.findOneAndUpdate({ _id: authenticated_user._id }, { $set: { articles: authenticated_user.articles}});
-						return resolve({
-							statusCode: 201,
-							message: "Successfully created article of a user",
-							data: data
+						let user = await UserModel.findOneAndUpdate({ _id: authenticated_user._id }, { $set: { articles: authenticated_user.articles}}, function(error, user){
+							if (error){
+								return reject({
+									data: err,
+									message: "error handled"
+								});
+							} else {
+								return resolve({
+									statusCode: 201,
+									message: "Successfully created article of a user",
+									data: data
+								});	
+							}
 						});
 
 					}
@@ -246,7 +253,7 @@ const routes = [
 			let pr = async (resolve, reject) =>{
 	    		const authenticated_user = request.auth.credentials;
 				if (authenticated_user.is_superadmin || authenticated_user.is_admin){
-					ArticleModel.findOneAndUpdate({ _id: request.params.article_id },{$set: {approved: true}}, function(err, article){
+					ArticleModel.findOneAndUpdate({ _id: request.params.article_id },{$set: {approved: true, approved_by: authenticated_user}}, function(err, article){
 						if (err){
 							return reject({
 								statusCode: 503,
