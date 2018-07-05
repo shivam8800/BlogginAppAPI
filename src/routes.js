@@ -113,7 +113,7 @@ const routes = [
 		}
 	},
 	{
-		method: 'GET',
+		method: 'PUT',
 	    path: '/create/admin/{user_id}',
 	    config:{
 	    	auth: 'jwt'
@@ -277,6 +277,55 @@ const routes = [
 			}
 			return new Promise(pr)
 	    }	
+	},
+	{
+		method:'GET',
+		path: '/apoorved/article/datewise',
+		handler: async (request, h) =>{
+
+			let pr = async (resolve, reject) =>{
+				ArticleModel.find({approved: true}).sort({date: -1}).exec(function(err, doc){
+					if(err){
+						return reject({
+							statusCode: 501,
+							message: "error has handled",
+							error: err
+						});
+					} else {
+						return resolve({
+							statusCode: 200,
+							message: "Successfully fetch the data",
+							data: doc
+						});
+					}
+				});
+			}
+			return new Promise(pr)
+		}
+	},
+	{
+		method: 'GET',
+		path: '/user/name/{user_id}',
+		handler: async (request, h) =>{
+			let pr = async (resolve, reject) =>{
+				UserModel.findOne({_id: request.params.user_id}, function(err, doc){
+					if (err){
+						return reject({
+							statusCode: 501,
+							message: 'error has handled',
+							error: err
+						});
+					} else {
+						return resolve({
+							statusCode: 501,
+							message: 'Successfully fetch the data',
+							data: doc
+						});
+					}
+				});
+			}
+			 return new Promise(pr)
+		}
 	}
 ]
 
