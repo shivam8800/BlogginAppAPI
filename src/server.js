@@ -3,6 +3,9 @@
 const Hapi = require('hapi');
 import routes from './routes'
 
+const Inert = require('inert');
+const Vision = require('vision');
+const HapiSwagger = require('hapi-swagger');
 // validation function
 const validate = async function (user,decoded, request) {
     // checks to see if the person is valid
@@ -17,6 +20,20 @@ const validate = async function (user,decoded, request) {
 
 const init = async () => {
     const server = new Hapi.Server({ port: 8080 });
+    const swaggerOptions = {
+        info: {
+                title: 'Test API Documentation'
+            },
+        };
+    
+    await server.register([
+        Inert,
+        Vision,
+        {
+            plugin: HapiSwagger,
+            options: swaggerOptions
+        }
+    ]);
 
     await server.register(require('hapi-auth-jwt2'));
 

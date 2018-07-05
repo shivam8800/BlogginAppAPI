@@ -10,8 +10,11 @@ const fs = require('fs');
 const routes = [
 	{
 		method: 'POST',
-		path: '/registration',
+		path: '/post/signup',
         config: {
+        	description: 'signup',
+	        notes: 'user can register yourself',
+	        tags: ['api'],
             // we joi plugin to validate request
             validate:{
               payload:{
@@ -66,8 +69,11 @@ const routes = [
 	},
 	{
 		method: 'POST',
-		path: '/login',
+		path: '/post/login',
 		config: {
+        	description: 'login authentication done by JWT',
+	        notes: 'user can login',
+	        tags: ['api'],
 			validate:{
 				payload:{
                     email:Joi.string(),
@@ -104,8 +110,11 @@ const routes = [
 	},
 	{
 		method: 'PUT',
-	    path: '/create/admin/{user_id}',
+	    path: '/update/admin/{user_id}',
 	    config:{
+        	description: 'superadmin has access to create admin',
+	        notes: 'create an admin',
+	        tags: ['api'],
 	    	auth: 'jwt'
 	    },
 	    handler: (request, h) => {
@@ -139,8 +148,11 @@ const routes = [
 	},
 	{
 		method: 'POST',
-		path: '/create/article',
+		path: '/post/article',
         config: {
+        	description: 'create article',
+	        notes: 'logged in user can create article',
+	        tags: ['api'],
             // we joi plugin to validate request
             validate:{
               payload:{
@@ -191,8 +203,11 @@ const routes = [
 	{
 
 		method: 'POST',
-		path: '/article/image/{article_id}',
+		path: '/post/article/image/{article_id}',
 		config: {
+        	description: 'article image',
+	        notes: 'when you save article call this route for saving image',
+	        tags: ['api'],
 			auth: 'jwt',
 			payload: {
 				output: 'stream',
@@ -235,8 +250,11 @@ const routes = [
 	},
 	{
 		method: 'PUT',
-	    path: '/approve/article/{article_id}',
+	    path: '/update/approve/article/{article_id}',
 	    config:{
+        	description: 'approve article',
+	        notes: 'Only superAdmin and Admin has access to approve article',
+	        tags: ['api'],
 	    	auth: 'jwt'
 	    },
 	    handler: (request, h) => {
@@ -270,7 +288,12 @@ const routes = [
 	},
 	{
 		method:'GET',
-		path: '/apoorved/article/datewise',
+		path: '/get/all/apoorved/article/datewise',
+		config:{
+        	description: 'list of apoorved article',
+	        notes: 'everyone can see this and the article is datewise',
+	        tags: ['api'],
+		},
 		handler: async (request, h) =>{
 
 			let pr = async (resolve, reject) =>{
@@ -295,7 +318,12 @@ const routes = [
 	},
 	{
 		method: 'GET',
-		path: '/userdata/{user_id}',
+		path: '/get/user/detail/{user_id}',
+		config:{
+        	description: 'get particular user data',
+	        notes: 'showing article written by and approved by name we can use this',
+	        tags: ['api'],
+		},
 		handler: async (request, h) =>{
 			let pr = async (resolve, reject) =>{
 				UserModel.findOne({_id: request.params.user_id}, function(err, doc){
@@ -319,7 +347,12 @@ const routes = [
 	},
 	{
 		method: 'GET',
-		path: '/all/article',
+		path: '/get/all/article',
+		config:{
+        	description: 'all article',
+	        notes: 'list of all article',
+	        tags: ['api'],
+		},
 		handler: async (request, h) =>{
 			let pr =  async (resolve, reject) =>{
 				ArticleModel.find({}, function(err,data){
@@ -343,7 +376,12 @@ const routes = [
 	},
 	{
 		method: 'GET',
-		path: '/articledata/{article_id}',
+		path: '/get/article/detail/{article_id}',
+		config:{
+			description: 'get detail of particular article',
+	        notes: 'article detail',
+	        tags: ['api'],
+		},
 		handler: async (request, h) =>{
 			let pr = async (resolve, reject) =>{
 				ArticleModel.findOne({_id: request.params.article_id}, function(err, doc){
